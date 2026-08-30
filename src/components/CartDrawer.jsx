@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { X, Trash2, ArrowRight, Package } from 'lucide-react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
 const CartDrawer = ({ isOpen, onClose, cart, setCart }) => {
   const [formData, setFormData] = useState({
@@ -42,7 +43,7 @@ const CartDrawer = ({ isOpen, onClose, cart, setCart }) => {
         }))
       };
       
-      await axios.post('http://localhost:3001/api/orders', orderPayload);
+      await axios.post(`${API_BASE_URL}/api/orders`, orderPayload);
       setOrderSuccess(true);
     } catch (error) {
       console.error('Failed to submit order', error);

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import { Search, SlidersHorizontal, Loader2, ShoppingCart } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import CartDrawer from '../components/CartDrawer';
@@ -19,7 +20,7 @@ const Catalog = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/products');
+      const response = await axios.get(`${API_BASE_URL}/api/products`);
       setProducts(response.data);
     } catch (error) {
       console.error('Failed to fetch products', error);

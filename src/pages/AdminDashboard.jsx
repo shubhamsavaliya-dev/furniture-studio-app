@@ -2,9 +2,10 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Package, ListOrdered, Plus, Edit2, Trash2, Loader2, Save, X, Sparkles, Download, MessageCircle, LogOut, Lock } from 'lucide-react';
 import { jsPDF } from 'jspdf';
+import { API_BASE_URL } from '../config';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3001/api'
+  baseURL: `${API_BASE_URL}/api`
 });
 
 api.interceptors.request.use((config) => {
@@ -68,7 +69,7 @@ const AdminDashboard = () => {
     setIsLoggingIn(true);
     setLoginError('');
     try {
-      const res = await axios.post('http://localhost:3001/api/admin/login', { username, password });
+      const res = await axios.post(`${API_BASE_URL}/api/admin/login`, { username, password });
       if (res.data.success) {
         localStorage.setItem('adminAuth', 'true');
         localStorage.setItem('adminToken', res.data.token);
@@ -231,7 +232,7 @@ const AdminDashboard = () => {
     // Image for inquiry
     if (imageUrl) {
       try {
-        const response = await fetch(`http://localhost:3001/api/proxy-image?url=${encodeURIComponent(imageUrl)}`);
+        const response = await fetch(`${API_BASE_URL}/api/proxy-image?url=${encodeURIComponent(imageUrl)}`);
         if (!response.ok) throw new Error('Proxy fetch failed');
         const blob = await response.blob();
         const base64data = await new Promise((resolve, reject) => {
@@ -686,7 +687,7 @@ Thank you for choosing Furniture Studio Showroom!`;
                       {/* Image */}
                       <div className="md:w-1/4">
                         <img 
-                          src={inq.image_url ? `http://localhost:3001/api/proxy-image?url=${encodeURIComponent(inq.image_url)}` : ''} 
+                          src={inq.image_url ? `${API_BASE_URL}/api/proxy-image?url=${encodeURIComponent(inq.image_url)}` : ''} 
                           alt="Custom AI Design" 
                           className="w-32 h-24 object-cover rounded-lg border border-neutral-200 bg-neutral-100 flex-shrink-0"
                           crossOrigin="anonymous"

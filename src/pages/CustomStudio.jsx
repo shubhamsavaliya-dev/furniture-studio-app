@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Sparkles, Image as ImageIcon, RotateCcw, PenTool, CheckCircle, Calculator } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 const TEMPLATES = [
   { id: 'round-table', name: 'Round Dining Table', basePrice: 15000 },
@@ -168,7 +169,7 @@ const CustomStudio = () => {
         estimated_price: estimatedPrice
       };
       
-      await fetch('http://localhost:3001/api/custom-inquiries', {
+      await fetch(`${API_BASE_URL}/api/custom-inquiries`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -210,7 +211,7 @@ const CustomStudio = () => {
 
     // Image fetching via proxy
     try {
-      const response = await fetch(`http://localhost:3001/api/proxy-image?url=${encodeURIComponent(generatedImage)}`);
+      const response = await fetch(`${API_BASE_URL}/api/proxy-image?url=${encodeURIComponent(generatedImage)}`);
       if (!response.ok) throw new Error('Proxy fetch failed');
       const blob = await response.blob();
       const base64data = await new Promise((resolve, reject) => {
