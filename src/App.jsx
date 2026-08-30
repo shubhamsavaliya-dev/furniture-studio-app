@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Catalog from './pages/Catalog';
 import AdminDashboard from './pages/AdminDashboard';
 import CustomStudio from './pages/CustomStudio';
+import Standee from './pages/Standee';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
             <Route path="/" element={<Catalog />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/studio" element={<CustomStudio />} />
+            <Route path="/standee" element={<Standee />} />
           </Routes>
         </main>
       </div>

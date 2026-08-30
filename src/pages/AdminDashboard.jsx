@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { Package, ListOrdered, Plus, Edit2, Trash2, Loader2, Save, X, Sparkles, Download, MessageCircle, LogOut, Lock } from 'lucide-react';
+import { Package, ListOrdered, Plus, Edit2, Trash2, Loader2, Save, X, Sparkles, Download, MessageCircle, LogOut, Lock, QrCode } from 'lucide-react';
 import { jsPDF } from 'jspdf';
+import { Link } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
 
 const api = axios.create({
@@ -417,10 +418,16 @@ Thank you for choosing Furniture Studio Showroom!`;
       <div className="mb-8">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-extrabold text-gray-900">Showroom Admin</h1>
-          <button onClick={handleLogout} className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-gray-200">
-            <LogOut className="w-4 h-4" />
-            Logout
-          </button>
+          <div className="flex items-center gap-3">
+            <Link to="/standee" target="_blank" className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-colors border border-indigo-100">
+              <QrCode className="w-4 h-4" />
+              Print QR Standee
+            </Link>
+            <button onClick={handleLogout} className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-gray-200">
+              <LogOut className="w-4 h-4" />
+              Logout
+            </button>
+          </div>
         </div>
         
         {/* Tabs */}
