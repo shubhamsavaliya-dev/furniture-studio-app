@@ -62,8 +62,8 @@ To run this project locally on your machine, follow these steps:
    ```
 
 4. **Access the application:**
-   * Frontend (Vite): [http://localhost:5173] (or the port specified in your terminal)
-   * Backend API: [http://localhost:3001]
+   * Frontend (Vite): `http://localhost:5173` (or the port specified in your terminal)
+   * Backend API: `http://localhost:3001`
      
 
 ## 📦 Deployment
