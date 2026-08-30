@@ -1,6 +1,6 @@
 # Furniture Studio
 
-![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel-black?style=for-the-badge&logo=vercel)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel-black?style=for-the-badge&logo=vercel)]
 **Live Demo:** [https://furniture-studio-app.vercel.app](https://furniture-studio-app.vercel.app)
 
 A modern full-stack web application designed for a premium furniture showroom. This platform allows customers to browse the catalog, design custom furniture using AI generation, and enables showroom admins to manage inventory, incoming orders, and custom inquiries seamlessly.
