@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
-import { Search, SlidersHorizontal, Loader2, ShoppingCart } from 'lucide-react';
+import { Search, SlidersHorizontal, ShoppingCart, AlertCircle, RefreshCw } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import CartDrawer from '../components/CartDrawer';
 
 const Catalog = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showColdStartNotice, setShowColdStartNotice] = useState(false);
+  const [error, setError] = useState(null);
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [sortOrder, setSortOrder] = useState('default');
@@ -15,16 +17,30 @@ const Catalog = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
+    let timer;
     fetchProducts();
+    return () => clearTimeout(timer);
   }, []);
 
   const fetchProducts = async () => {
+    setLoading(true);
+    setError(null);
+    setShowColdStartNotice(false);
+
+    // Agar 4 second tak data load na ho, toh cold start notice show karein
+    const timer = setTimeout(() => {
+      setShowColdStartNotice(true);
+    }, 4000);
+
     try {
       const response = await axios.get(`${API_BASE_URL}/api/products`);
       setProducts(response.data);
-    } catch (error) {
-      console.error('Failed to fetch products', error);
+    } catch (err) {
+      console.error('Failed to fetch products', err);
+      setError('Could not connect to server. Render free tier may still be spinning up.');
     } finally {
+      clearTimeout(timer);
+      setShowColdStartNotice(false);
       setLoading(false);
     }
   };
@@ -150,10 +166,43 @@ const Catalog = () => {
         </div>
       </div>
 
-      {/* Product Grid */}
+      {/* Product Grid / Loading / Error State */}
       {loading ? (
-        <div className="flex justify-center items-center py-32">
-          <Loader2 className="w-10 h-10 animate-spin text-indigo-600" />
+        <div className="py-4">
+          {/* Server Wakeup Notice Banner */}
+          {showColdStartNotice && (
+            <div className="mb-8 p-4 bg-amber-50 border border-amber-200 rounded-xl text-amber-800 text-sm flex items-center justify-center gap-3 shadow-sm animate-pulse text-center">
+              <span>⚡ Server sleep mode se wake up ho raha hai (free cloud tier), kripya 20-30 seconds wait karein...</span>
+            </div>
+          )}
+
+          {/* Modern Skeleton Cards Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
+              <div key={item} className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm animate-pulse space-y-4">
+                <div className="bg-gray-200 h-48 rounded-xl w-full"></div>
+                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                <div className="flex justify-between items-center pt-2">
+                  <div className="h-5 bg-gray-200 rounded w-1/4"></div>
+                  <div className="h-8 bg-gray-200 rounded-lg w-1/3"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : error ? (
+        <div className="text-center py-20 bg-white rounded-3xl border border-red-100 p-8 max-w-md mx-auto shadow-sm">
+          <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-3" />
+          <h3 className="text-lg font-bold text-gray-900 mb-1">Catalog Load Failed</h3>
+          <p className="text-sm text-gray-500 mb-6">{error}</p>
+          <button 
+            onClick={fetchProducts}
+            className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-5 py-2.5 rounded-xl transition-all shadow-sm"
+          >
+            <RefreshCw className="w-4 h-4" />
+            Retry Connection
+          </button>
         </div>
       ) : filteredProducts.length === 0 ? (
         <div className="text-center py-32 bg-white rounded-3xl border border-dashed border-gray-300">
